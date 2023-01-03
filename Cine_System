@@ -1,6 +1,4 @@
-#      Garanta que os arquivos txt gerados pelo programa fiquem em uma mesma pasta que o codigo python para que haja a leitura dos dados já cadastrados. 
-
-
+#      Garanta que os arquivos txt gerados pelo programa fiquem em uma mesma pasta que o codigo python para que haja a leitura dos dados já cadastrados.
 
 
 ################################################################################################################
@@ -133,23 +131,10 @@ def menu_alterar_salas():
     opcao3 = input("-> ")
     return opcao3
 
-    # Função para verificação de posição de na lista
-def verificar_codigo(lista,code):
-    achou =  False
-    saida=-1
-    if len(lista) > 0:
-        i=0
-        while i < len(lista) and not achou:
-            if lista[i].codigo == code:
-                saida = i
-                achou = True
-            i=i+1
-    return saida
-
     # Função de alterações para salas listadas
 def alterar_salas(lista_salas):
     code=input("Digite o código da sala:")
-    i = verificar_codigo(lista_salas,code)
+    i = verificar_posicao(lista_salas,code)
     if i != -1:
         op3= ''
         res = input("Deseja mesmo alterar esse cadastro? 1-(SIM) 0-(NÃO)")
@@ -160,7 +145,7 @@ def alterar_salas(lista_salas):
                     continuar=True
                     while continuar==True:
                         code2=input("Digite o novo código: ")
-                        v = verificar_codigo(lista_salas,code2)
+                        v = verificar_posicao(lista_salas,code2)
                         if v!=-1:
                             print("O código digitado já está em uso! Tente novamente: ")
                         else:
@@ -190,7 +175,7 @@ def alterar_salas(lista_salas):
     # Função de exclusão:
 def excluir_salas(lista):
     code=input("Digite o código da sala:")
-    i = verificar_codigo(lista,code)
+    i = verificar_posicao(lista,code)
     if i != -1:
         res = input("Deseja mesmo excluir esse cadastro? 1-(SIM) 0-(NÃO): ")
         if res=="1":
@@ -207,7 +192,7 @@ def excluir_salas(lista):
 def inserir_salas(lista):
     s = Sala()
     code=input("Digite o código da sala:")
-    i=verificar_codigo(lista,code)
+    i=verificar_posicao(lista,code)
     if i!=-1:
         print("O código digitado já está em uso!")
         i=i+1
@@ -247,7 +232,7 @@ def listar_uma_sala(lista):
         continuar = True
         while continuar == True:
             code = input("Digite o código da sala: ")
-            i=verificar_codigo(lista,code)
+            i=verificar_posicao(lista,code)
             continuar_2 = True
             while continuar_2 == True:
                 if i!=-1:
@@ -299,7 +284,7 @@ def menu_alterar_filme():
     # Função de alterações para filmes listados
 def alterar_filmes(lista_filmes):
     code=input("Digite o código do filme:")
-    i = verificar_codigo(lista_filmes,code)
+    i = verificar_posicao(lista_filmes,code)
     if i != -1:
         op3= ''
         res = input("Deseja mesmo alterar esse cadastro? 1-(SIM) 0-(NÃO)")
@@ -310,7 +295,7 @@ def alterar_filmes(lista_filmes):
                     continuar=True
                     while continuar==True:
                         code2=input("Digite o novo código: ")
-                        v = verificar_codigo(lista_filmes,code2)
+                        v = verificar_posicao(lista_filmes,code2)
                         if v!=-1:
                             print("O código digitado já está em uso! Tente novamente: ")
                         else:
@@ -351,7 +336,7 @@ def alterar_filmes(lista_filmes):
     # Função de exclusão de filmes listados
 def excluir_filmes(lista_filmes):
     code=input("Digite o código do filme:")
-    i = verificar_codigo(lista_filmes,code)
+    i = verificar_posicao(lista_filmes,code)
     if i != -1:
         res = input("Deseja mesmo excluir esse cadastro? 1-(SIM) 0-(NÃO): ")
         if res=="1":
@@ -369,7 +354,7 @@ def inserir_filme(lista_filmes):
     f = Filme()
     lista_atores = []
     code=input("Digite o código do filme:")
-    i=verificar_codigo(lista_filmes,code)
+    i=verificar_posicao(lista_filmes,code)
     if i!=-1:
         print("O código digitado já está em uso!")
         i=i+1
@@ -423,7 +408,7 @@ def listar_um_filme(lista_filmes):
         continuar = True
         while continuar == True:
             code = input("Digite o código do filme: ")
-            i=verificar_codigo(lista_filmes,code)
+            i=verificar_posicao(lista_filmes,code)
             continuar_2 = True
             while continuar_2 == True:
                 if i!=-1:
@@ -495,7 +480,7 @@ def listar_uma_sessao(lista_sessoes):
     else:
         code_sala=input("Digite o código do sala da sessão:")
         data = input("Digite a data da sessão - nesse formato dd/mm/aaaa:  ")
-        horario = input("Digite o horario de início e fim da sessão - nesse formato (hh:mm/hh:mm):   ")
+        horario = input("Digite o horario de início e fim da sessão - nesse formato e sem parênteses (hh:mm/hh:mm):   ")
         posicao = verificar_posicao_sessao(lista_sessoes,code_sala,data,horario)
         if posicao != - 1:
             imprimir_sessao(lista_sessoes,posicao)
@@ -542,7 +527,7 @@ def alterar_sessao(lista_sessoes,lista_filmes,lista_salas):
         posicao = verificar_posicao_sessao(lista_sessoes,code_sala,data,horario)
         if posicao != -1:
             op3= ''
-            res = input("Deseja alterar essa sessão? 1-(SIM) 0-(NÃO)")
+            res = input("Deseja alterar essa sessão? 1-(SIM) 0-(NÃO): ")
             print("Lembre-se, nessa opção você não pode mudar código de filmes ou de salas específicas, mas apenas trocar qual filme ou sala de cada sessão. Para isso vá em seus respectivos menus.")
             if res=="1":
                 while op3 != '0':
@@ -555,7 +540,14 @@ def alterar_sessao(lista_sessoes,lista_filmes,lista_salas):
 
                             interposicao = verificar_interposicao_sessao(lista_sessoes,data,horario,code_sala)
                             if interposicao == True:
-                                print("Um ou os dois horário digitados estão dando problema com outras sessões! Tente novamente.")
+                                print("Um ou os dois horário digitados estão dando problema com outras sessões!")
+                                res = input("Você deseja tentar novamente? sim(1) ou não(0) -->")
+                                if res == 1:
+                                    print("Digite um código diferente.")
+                                elif res ==0:
+                                    continuar=False
+                                else:
+                                    print("Resposta invalida, você será direcionado para o menu.") 
                             else:
                                 lista_sessoes[posicao].data = data
                                 lista_sessoes[posicao].horario = horario
@@ -565,7 +557,14 @@ def alterar_sessao(lista_sessoes,lista_filmes,lista_salas):
                             code_filme = input("Digite o código do filme: ")
                             i = verificar_posicao(lista_filmes,code_filme)
                             if i == -1:
-                                print("Essse não existe esse código de filme. Tente outro código.")
+                                print("Não existe esse código de filme.")
+                                res = input("Você deseja tentar novamente? sim(1) ou não(0) -->")
+                                if res == 1:
+                                    print("Digite um código diferente.")
+                                elif res ==0:
+                                    continuar=False
+                                else:
+                                    print("Resposta invalida, você será direcionado para o menu.") 
                             else:
                                 lista_sessoes[posicao].codigo_do_filme = code_filme
                                 continuar=False
@@ -573,7 +572,14 @@ def alterar_sessao(lista_sessoes,lista_filmes,lista_salas):
                             code_sala = input("Digite o código da sala: ")
                             i = verificar_posicao(lista_salas,code_sala)
                             if i == -1:
-                                print("Essse não existe esse código de sala. Tente outro código.")
+                                print("Não existe esse código de filme.")
+                                res = input("Você deseja tentar novamente? sim(1) ou não(0) -->")
+                                if res == 1:
+                                    print("Digite um código diferente.")
+                                elif res ==0:
+                                    continuar=False
+                                else:
+                                    print("Resposta invalida, você será direcionado para o menu.")
                             else:
                                 lista_sessoes[posicao].codigo_da_sala = code_sala
                                 continuar=False
@@ -621,8 +627,6 @@ def excluir_sessao(lista_sessoes):
         # Função para inserir novas salas a lista
 def inserir_sessoes(lista_sessoes,lista_salas,lista_filmes):
     s = Sessao()
-    
-
     if lista_filmes != [] and lista_salas != []:
         continuar = True
         while continuar:
@@ -630,20 +634,35 @@ def inserir_sessoes(lista_sessoes,lista_salas,lista_filmes):
             i = verificar_posicao(lista_salas,code_sala)
             if i == -1:
                 print("O código digitado não está cadastrado!")
+                print("Não existe esse código de filme.")
+                res = input("Você deseja tentar novamente? sim(1) ou não(0) -->")
+                if res == 1:
+                    print("Digite um código diferente.")
+                elif res ==0:
+                    continuar=False
+                else:
+                    print("Resposta invalida, você será direcionado para o menu.") 
             else:
                 data = input("Digite a data da sessão - nesse formato dd/mm/aaaa:  ")
-                horario = input("Digite o horario de início e de termino da sessão - nesse formato (hh:mm/hh:mm):   ")                
+                horario = input("Digite o horario de início e de termino da sessão - nesse formato e sem parenteses (hh:mm/hh:mm)   ")                
                 interposicao = verificar_interposicao_sessao(lista_sessoes,data,horario,code_sala)
                 if interposicao == True:
                     print("Alguma sessão existete está entrando em conflito com a sessão nova, troquei os horarios, a data ou a sala.")
                 else:
                     continuar = False
-        continuar = True
         while continuar:
             code_filme=input("Digite o código do filme da sessão:")
             i = verificar_posicao(lista_filmes,code_filme)
             if i == -1:
                 print("O esse filme não está cadastrado! Utilize um codigo existem")
+                print("Não existe esse código de filme.")
+                res = input("Você deseja tentar novamente? sim(1) ou não(0) -->")
+                if res == 1:
+                    print("Digite um código diferente.")
+                elif res ==0:
+                    continuar=False
+                else:
+                    print("Resposta invalida, você será direcionado para o menu.") 
             else:
                 continuar = False
             
